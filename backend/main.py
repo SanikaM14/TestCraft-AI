@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.concurrency import run_in_threadpool
@@ -407,3 +408,24 @@ async def download_pdf(request: PDFRequest):
         return FileResponse(pdf_path, media_type="application/pdf", filename="TestCraft_QA_Test_Cases.pdf")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"PDF Generation Error: {str(e)}")
+
+# --- Static Frontend Serving & SPA Fallback ---
+dist_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "dist")
+assets_path = os.path.join(dist_path, "assets")
+
+if os.path.exists(assets_path):
+    app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
+
+@app.get("/{full_path:path}")
+async def serve_spa(full_path: str):
+    if full_path.startswith("api"):
+        raise HTTPException(status_code=404, detail="API endpoint not found")
+    if os.path.exists(dist_path):
+        target_file = os.path.join(dist_path, full_path)
+        if full_path and os.path.exists(target_file) and os.path.isfile(target_file):
+            return FileResponse(target_file)
+        index_file = os.path.join(dist_path, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
+    return {"message": "TestCraft AI backend API is running. Frontend static files not found."}
+
