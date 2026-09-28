@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+groq
+markdown-pdf
+python-dotenv
+PyMuPDF
+python-docx
+pandas
+python-jose[cryptography]
+bcrypt
+SQLAlchemy
+python-multipart
+pydantic
