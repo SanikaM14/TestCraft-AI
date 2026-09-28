@@ -11,6 +11,8 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 export default function Login({ initialMode = 'login' }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(initialMode === 'signup' ? 1 : 0);
@@ -85,7 +87,7 @@ export default function Login({ initialMode = 'login' }) {
     try {
       if (!isLogin) {
         // Step 1: Sign up new user
-        await axios.post('/api/signup', {
+        await axios.post(`${API_BASE}/api/signup`, {
           username: cleanUsername,
           password: cleanPassword
         });
@@ -97,7 +99,7 @@ export default function Login({ initialMode = 'login' }) {
       formData.append('username', cleanUsername);
       formData.append('password', cleanPassword);
 
-      const res = await axios.post('/api/login', formData, {
+      const res = await axios.post(`${API_BASE}/api/login`, formData, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
 

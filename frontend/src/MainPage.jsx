@@ -40,6 +40,8 @@ const cleanMarkdown = (raw) => {
   return text.trim();
 };
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 export default function MainPage() {
   const navigate = useNavigate();
   const [tokens, setTokens] = useState(null);
@@ -97,7 +99,7 @@ export default function MainPage() {
     setCustomApiKey(savedCustomKey);
     setTempKeyInput(savedCustomKey);
 
-    axios.get('/api/me', { 
+    axios.get(`${API_BASE}/api/me`, { 
       headers: { Authorization: `Bearer ${token}` } 
     })
       .then(res => {
@@ -170,7 +172,7 @@ export default function MainPage() {
       if (inputType === 'upload' && file) {
         const formData = new FormData();
         formData.append("file", file);
-        const extractRes = await axios.post('/api/extract-text', formData, {
+        const extractRes = await axios.post(`${API_BASE}/api/extract-text`, formData, {
           headers: { 
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -186,7 +188,7 @@ export default function MainPage() {
       }
 
       const activeFocusAreas = Object.keys(focusAreas).filter(k => focusAreas[k]);
-      const genRes = await axios.post('/api/generate-tests', {
+      const genRes = await axios.post(`${API_BASE}/api/generate-tests`, {
         text_context: textContext.substring(0, 25000),
         format_style: formatStyle,
         focus_areas: activeFocusAreas,
@@ -210,7 +212,7 @@ export default function MainPage() {
     setDownloadingPdf(true);
     setError('');
     try {
-      const res = await axios.post('/api/download-pdf', 
+      const res = await axios.post(`${API_BASE}/api/download-pdf`, 
         { markdown: cleanMarkdown(markdown) }, 
         { responseType: 'blob' }
       );
