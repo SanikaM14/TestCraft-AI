@@ -193,13 +193,44 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
     new_user = User(username=user.username, password_hash=hashed_password, tokens=10)
     db.add(new_user)
     db.commit()
-    return {"message": "User created successfully"}
+    access_token = create_access_token(data={"sub": new_user.username})
+    return {
+        "message": "User created successfully", 
+        "access_token": access_token, 
+        "token_type": "bearer", 
+        "tokens_remaining": new_user.tokens
+    }
 
 @app.post("/api/login")
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.password_hash):
+async def login(request: Request, db: Session = Depends(get_db)):
+    content_type = request.headers.get("content-type", "")
+    if "application/json" in content_type:
+        try:
+            data = await request.json()
+            uname = str(data.get("username", "")).strip()
+            pwd = str(data.get("password", "")).strip()
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid JSON body")
+    else:
+        try:
+            form = await request.form()
+            uname = str(form.get("username", "")).strip()
+            pwd = str(form.get("password", "")).strip()
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid form data")
+            
+    if not uname or not pwd:
+        raise HTTPException(status_code=400, detail="Username and password are required")
+
+    user = db.query(User).filter(User.username == uname).first()
+    if not user:
+        hashed_password = get_password_hash(pwd)
+        user = User(username=uname, password_hash=hashed_password, tokens=10)
+        db.add(user)
+        db.commit()
+    elif not verify_password(pwd, user.password_hash):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
+        
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer", "tokens_remaining": user.tokens}
 

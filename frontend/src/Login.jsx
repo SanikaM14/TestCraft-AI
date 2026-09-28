@@ -85,29 +85,29 @@ export default function Login({ initialMode = 'login' }) {
     setLoading(true);
 
     try {
+      let res;
       if (!isLogin) {
-        // Step 1: Sign up new user
-        await axios.post(`${API_BASE}/api/signup`, {
+        // Step 1: Sign up new user and receive token
+        res = await axios.post(`${API_BASE}/api/signup`, {
           username: cleanUsername,
           password: cleanPassword
         });
-        setSuccess('Account created successfully! Logging you in...');
+        setSuccess('Account created successfully! Redirecting...');
+      } else {
+        // Step 2: Authenticate existing user
+        res = await axios.post(`${API_BASE}/api/login`, {
+          username: cleanUsername,
+          password: cleanPassword
+        });
       }
 
-      // Step 2: Authenticate and obtain JWT token
-      const formData = new URLSearchParams();
-      formData.append('username', cleanUsername);
-      formData.append('password', cleanPassword);
-
-      const res = await axios.post(`${API_BASE}/api/login`, formData, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      });
-
-      localStorage.setItem('token', res.data.access_token);
+      if (res.data && res.data.access_token) {
+        localStorage.setItem('token', res.data.access_token);
+      }
 
       setTimeout(() => {
         navigate('/', { replace: true });
-      }, 500);
+      }, 400);
     } catch (err) {
       setError(formatError(err));
       setSuccess('');
