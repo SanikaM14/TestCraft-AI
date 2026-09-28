@@ -3,9 +3,8 @@ uvicorn
 groq
 markdown-pdf
 python-dotenv
-PyMuPDF
+pypdf
 python-docx
-pandas
 python-jose[cryptography]
 bcrypt
 SQLAlchemy

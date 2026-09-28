@@ -7,11 +7,8 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, field_validator
 import os
-try:
-    import pymupdf as fitz
-except ImportError:
-    import fitz
-import pandas as pd
+import io
+import pypdf
 from docx import Document
 from groq import Groq, RateLimitError, AuthenticationError, APIConnectionError
 from markdown_pdf import MarkdownPdf, Section
@@ -214,16 +211,20 @@ def parse_file_sync(filename: str, content: bytes) -> str:
 
     try:
         if ext == ".pdf":
-            doc = fitz.open(stream=content, filetype="pdf")
-            for page in doc:
-                extracted_text += page.get_text() + "\n"
+            reader = pypdf.PdfReader(io.BytesIO(content))
+            for page in reader.pages:
+                text = page.extract_text()
+                if text:
+                    extracted_text += text + "\n"
         elif ext == ".docx":
             doc = Document(temp_path)
             for para in doc.paragraphs:
                 extracted_text += para.text + "\n"
         elif ext == ".csv":
-            df = pd.read_csv(temp_path)
-            extracted_text = df.to_string()
+            import csv
+            text_stream = io.StringIO(content.decode('utf-8', errors='ignore'))
+            reader = csv.reader(text_stream)
+            extracted_text = "\n".join([", ".join(row) for row in reader if row])
         else:
             raise ValueError("Unsupported file format")
     finally:
