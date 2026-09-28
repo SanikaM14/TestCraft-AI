@@ -22,25 +22,20 @@ TestCraft AI is an automated Quality Assurance engineering platform that ingests
 ```text
 WebsiteTester/
 ├── backend/
-│   ├── .env                       # Environment variables (API keys, JWT secret)
+│   ├── .env.example               # Environment variables template for contributors
 │   ├── main.py                    # FastAPI application, authentication, parsers & AI routes
 │   ├── qa_app.db                  # SQLite database for user accounts and token tracking
-│   ├── requirements.txt           # Python backend dependencies
 │   └── test_features.py           # Automated backend integration test suite
 ├── frontend/
-│   ├── public/                    # Static web assets
+│   ├── public/                    # Static web assets & favicon
 │   ├── src/
-│   │   ├── assets/                # Images and graphic components
-│   │   ├── App.css                # Global styling overrides
-│   │   ├── App.jsx                # React Router v7 root & theme setup
-│   │   ├── index.css              # Baseline CSS resets
+│   │   ├── App.jsx                # React Router root & theme configuration
 │   │   ├── Login.jsx              # Sign-In and Sign-Up authentication views
 │   │   ├── main.jsx               # React entrypoint
 │   │   └── MainPage.jsx           # Main dashboard, upload form, GFM preview & export
 │   ├── index.html                 # Main HTML template
 │   ├── package.json               # Node.js dependencies and build scripts
 │   └── vite.config.js             # Vite configuration
-├── app.py                         # Standalone Streamlit interface
 ├── REQUIREMENTS.md                # Full Software Requirements Specification (SRS)
 ├── LICENSE                        # MIT License
 ├── README.md                      # Project documentation

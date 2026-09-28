@@ -4,7 +4,7 @@ import {
   CircularProgress, FormGroup, Checkbox, Select, MenuItem, 
   InputLabel, FormControl, FormControlLabel, RadioGroup, Radio,
   Alert, Stack, Tooltip, Chip, Dialog, DialogTitle, DialogContent,
-  DialogActions, InputAdornment, IconButton, Divider, Grid
+  DialogActions, InputAdornment, IconButton, Divider
 } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -97,7 +97,7 @@ export default function MainPage() {
     setCustomApiKey(savedCustomKey);
     setTempKeyInput(savedCustomKey);
 
-    axios.get('http://localhost:8000/api/me', { 
+    axios.get('/api/me', { 
       headers: { Authorization: `Bearer ${token}` } 
     })
       .then(res => {
@@ -170,7 +170,7 @@ export default function MainPage() {
       if (inputType === 'upload' && file) {
         const formData = new FormData();
         formData.append("file", file);
-        const extractRes = await axios.post('http://localhost:8000/api/extract-text', formData, {
+        const extractRes = await axios.post('/api/extract-text', formData, {
           headers: { 
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -186,7 +186,7 @@ export default function MainPage() {
       }
 
       const activeFocusAreas = Object.keys(focusAreas).filter(k => focusAreas[k]);
-      const genRes = await axios.post('http://localhost:8000/api/generate-tests', {
+      const genRes = await axios.post('/api/generate-tests', {
         text_context: textContext.substring(0, 25000),
         format_style: formatStyle,
         focus_areas: activeFocusAreas,
@@ -210,7 +210,7 @@ export default function MainPage() {
     setDownloadingPdf(true);
     setError('');
     try {
-      const res = await axios.post('http://localhost:8000/api/download-pdf', 
+      const res = await axios.post('/api/download-pdf', 
         { markdown: cleanMarkdown(markdown) }, 
         { responseType: 'blob' }
       );

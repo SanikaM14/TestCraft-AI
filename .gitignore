@@ -1,18 +1,25 @@
+# Environment & Secrets (Developer Keys & JWT Secrets)
+.env
+.env.*
+*.env
+backend/.env
+backend/.env.*
+root.env
+!.env.example
+!backend/.env.example
+
 # Virtual Environments
 venv/
 backend/venv/
 env/
-.env
-backend/.env
-root.env
 
-# Dependencies & Build
+# Dependencies & Build Output
 node_modules/
 frontend/node_modules/
 dist/
 frontend/dist/
 
-# Python cache & artifacts
+# Python Cache & Artifacts
 __pycache__/
 backend/__pycache__/
 *.pyc
@@ -25,13 +32,15 @@ backend/__pycache__/
 *.sqlite3
 backend/qa_app.db
 
-# Generated PDFs & temporary files
+# Generated PDFs & Temporary Export Files
 *.pdf
 test_cases.pdf
 Mythra_Test_Cases.pdf
 TestCraft_Generated_Test_Cases.pdf
 
-# OS & Streamlit files
+# OS & Editor Artifacts
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
 .streamlit/

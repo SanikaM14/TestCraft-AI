@@ -36,7 +36,10 @@ else:
     load_dotenv()
 
 # --- DB Setup ---
-SQLALCHEMY_DATABASE_URL = "sqlite:///./qa_app.db"
+if os.environ.get("VERCEL"):
+    SQLALCHEMY_DATABASE_URL = "sqlite:////tmp/qa_app.db"
+else:
+    SQLALCHEMY_DATABASE_URL = "sqlite:///./qa_app.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

@@ -85,7 +85,7 @@ export default function Login({ initialMode = 'login' }) {
     try {
       if (!isLogin) {
         // Step 1: Sign up new user
-        await axios.post('http://localhost:8000/api/signup', {
+        await axios.post('/api/signup', {
           username: cleanUsername,
           password: cleanPassword
         });
@@ -97,7 +97,7 @@ export default function Login({ initialMode = 'login' }) {
       formData.append('username', cleanUsername);
       formData.append('password', cleanPassword);
 
-      const res = await axios.post('http://localhost:8000/api/login', formData, {
+      const res = await axios.post('/api/login', formData, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
 
