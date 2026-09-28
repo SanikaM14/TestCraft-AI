@@ -1,0 +1,7 @@
+streamlit
+groq
+markdown-pdf
+python-dotenv
+PyMuPDF
+python-docx
+pandas

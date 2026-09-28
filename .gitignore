@@ -1,0 +1,37 @@
+# Virtual Environments
+venv/
+backend/venv/
+env/
+.env
+backend/.env
+root.env
+
+# Dependencies & Build
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# Python cache & artifacts
+__pycache__/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# SQLite Database
+*.db
+*.sqlite
+*.sqlite3
+backend/qa_app.db
+
+# Generated PDFs & temporary files
+*.pdf
+test_cases.pdf
+Mythra_Test_Cases.pdf
+TestCraft_Generated_Test_Cases.pdf
+
+# OS & Streamlit files
+.DS_Store
+Thumbs.db
+.streamlit/
