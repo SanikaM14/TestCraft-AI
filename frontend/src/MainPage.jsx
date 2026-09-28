@@ -83,7 +83,7 @@ export default function MainPage() {
       if (typeof detail === 'object') return JSON.stringify(detail);
     }
     if (err.response?.data?.message) return err.response.data.message;
-    if (err.code === 'ERR_NETWORK') return 'Unable to connect to server. Please verify the backend is running on port 8000.';
+    if (err.code === 'ERR_NETWORK') return 'Unable to connect to server. Please check your network connection.';
     return err.message || 'Operation failed. Please try again.';
   };
 

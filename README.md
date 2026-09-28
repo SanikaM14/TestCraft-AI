@@ -114,6 +114,18 @@ npm run dev
 ```
 
 Open `http://localhost:5173` in your browser.
+ 
+---
+
+### 4. Deploying to Vercel
+
+1. Push your repository to GitHub.
+2. In [Vercel](https://vercel.com), import your repository.
+3. Configure the following **Environment Variables** in your Vercel Project Settings:
+   - `GROQ_API_KEY`: Your default Groq Cloud API Key (`gsk_...`).
+   - `JWT_SECRET_KEY`: A strong random secret key for session JWT tokens.
+   - `DATABASE_URL` *(Optional)*: PostgreSQL connection URI (e.g., from Supabase or Neon) for persistent cloud database storage across serverless instances.
+4. Click **Deploy**. The frontend (Vite React) and backend API (`api/index.py`) will deploy seamlessly.
 
 ---
 

@@ -9,6 +9,5 @@ pandas
 python-jose[cryptography]
 bcrypt
 SQLAlchemy
-psycopg2-binary
 python-multipart
 pydantic
